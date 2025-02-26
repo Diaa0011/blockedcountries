@@ -14,8 +14,9 @@ namespace BlockedCountries.Controller
             _ipService = ipService ??
                 throw new ArgumentNullException(nameof(ipService));
         }
-        [HttpGet("{ip}")]
-        public async Task<IActionResult> GetIpGeoData(string ip)
+        //[HttpGet("{ip?}")] //This is the was original part used from query
+        [HttpGet]
+        public async Task<IActionResult> GetIpGeoData([FromQuery]string? ip)
         {
             var ipGeoData = await _ipService.GetIpGeoData(ip);
             return Ok(ipGeoData);

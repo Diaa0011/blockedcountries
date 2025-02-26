@@ -6,17 +6,25 @@ namespace BlockedCountries.Service.Service{
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IpService(HttpClient client, IConfiguration configuration)
+        public IpService(HttpClient client, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _client = client ??
                  throw new ArgumentNullException(nameof(client));
             _configuration = configuration ??
                  throw new ArgumentNullException(nameof(configuration));
+            _httpContextAccessor = httpContextAccessor ??
+                    throw new ArgumentNullException(nameof(httpContextAccessor));
         }
         
-        public async Task<IpGeoData> GetIpGeoData(string ip)
+        public async Task<IpGeoData> GetIpGeoData(string? ip)
         {
+            if(ip == null)
+            {
+                ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress?.ToString();
+                Console.WriteLine("Ip: ",ip);
+            }
             var baseUrl = _configuration["IpGeolocation:BaseUrl"];
             var apikKey = _configuration["IpGeolocation:ApiKey"];
 
@@ -29,7 +37,7 @@ namespace BlockedCountries.Service.Service{
             var json = await response.Content.ReadAsStringAsync();
 
             var ipGeoData = JsonSerializer.Deserialize<IpGeoData>(json);
-            
+
             return ipGeoData;
         
         }
