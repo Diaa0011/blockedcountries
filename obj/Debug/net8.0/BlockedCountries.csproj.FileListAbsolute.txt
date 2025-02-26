@@ -50,3 +50,4 @@ E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\Newtonsoft.Json.dll
 E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
 E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\StackExchange.Redis.dll
 E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+E:\sortech_Task\BlockedCountries\obj\Debug\net8.0\BlockedCountries.sourcelink.json

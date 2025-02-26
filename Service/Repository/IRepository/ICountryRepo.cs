@@ -1,11 +1,14 @@
-using Entities;
+
+using BlockedCountries.Dtos;
 
 namespace BlockedCountries.Services.Repository.IRepository
 {
     public interface ICountryRepo
     {
         Country GetCountry(string code);
+        bool CountryExists(string code);
         IEnumerable<Country> GetCountries();
-        void AddCountry(string code, bool? isBlocked);
+        void AddCountry(string code, string? name);
+        void RemoveCountry(string code);
     }
 }

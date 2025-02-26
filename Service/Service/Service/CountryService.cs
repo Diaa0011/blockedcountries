@@ -1,7 +1,6 @@
 using System.Collections;
 using BlockedCountries.Services.Repository.IRepository;
-using Entities;
-
+using BlockedCountries.Dtos;
 namespace BlockedCountries.Services.Service
 {
     public class CountryService : ICountryService
@@ -22,7 +21,7 @@ namespace BlockedCountries.Services.Service
 
             return country;
         }
-        public IEnumerable<Country> GetCountries()
+        public IEnumerable<Country> GetCountries(int pageNumber,int pageSize,string? searchString)
         {
             if (_countryRepo == null)
             {
@@ -30,17 +29,53 @@ namespace BlockedCountries.Services.Service
             }
 
             var countries = _countryRepo.GetCountries();
-            
-            return countries;
+            //search
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                countries = countries.Where(c => c.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+            }
+            //pagination and sorting
+            var paginatedCountries = countries.Skip((pageNumber -1) * pageSize)
+                .Take(pageSize).OrderBy(c=>c.Name);
+
+            return paginatedCountries;
         }
-        public void AddCountry(string code, bool? isBlocked)
+        public void AddCountry(string code,string? name)
         {
-            var countries = _countryRepo.GetCountries();
-            if (countries.Any(c => c.Code == code))
+            if (code == null || code.Length != 2)
+            {
+                throw new InvalidOperationException("Check you entered the right input.");
+            }
+            else if (_countryRepo.CountryExists(code))
             {
                 throw new InvalidOperationException("The country already exists.");
             }
-            _countryRepo.AddCountry(code, isBlocked);
+            else
+            {
+                try
+                {
+                    _countryRepo.AddCountry(code,name);
+                }
+                catch (Exception e)
+                {
+                    throw new InvalidOperationException("The country could not be added to the blocked list.");
+                }
+            }
+
         }
+        public void RemoveCountry(string code)
+        {
+            var country = _countryRepo.GetCountry(code);
+            if (country == null)
+            {
+                throw new InvalidOperationException("The country does not exist in blocked List.");
+            }
+
+            _countryRepo.RemoveCountry(code);
+
+
+        }
+
+
     }
 }
