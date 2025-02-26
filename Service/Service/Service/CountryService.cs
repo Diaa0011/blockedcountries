@@ -1,7 +1,7 @@
 using System.Collections;
-using BlockedCountries.Services.Repository.IRepository;
+using BlockedCountries.Service.Repository.IRepository;
 using BlockedCountries.Dtos;
-namespace BlockedCountries.Services.Service
+namespace BlockedCountries.Service.Service
 {
     public class CountryService : ICountryService
     {

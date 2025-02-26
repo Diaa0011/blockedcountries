@@ -1,6 +1,7 @@
-using BlockedCountries.Services.Repository.IRepository;
-using BlockedCountries.Services.Repository.Repository;
-using BlockedCountries.Services.Service;
+using BlockedCountries.Service.Repository.IRepository;
+using BlockedCountries.Service.Repository.Repository;
+using BlockedCountries.Service.Service;
+using BlockedCountries.Service.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//for ip part and parsing
+builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ICountryRepo,CountryRepo>();
 builder.Services.AddScoped<ICountryService,CountryService>();
+builder.Services.AddScoped<IIpService,IpService>();
+
+
 
 var app = builder.Build();
 

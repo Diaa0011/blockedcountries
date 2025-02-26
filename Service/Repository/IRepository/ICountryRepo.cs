@@ -1,7 +1,7 @@
 
 using BlockedCountries.Dtos;
 
-namespace BlockedCountries.Services.Repository.IRepository
+namespace BlockedCountries.Service.Repository.IRepository
 {
     public interface ICountryRepo
     {

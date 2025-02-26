@@ -1,8 +1,8 @@
 using System.Collections.Concurrent;
 using BlockedCountries.Dtos;
-using BlockedCountries.Services.Repository.IRepository;
+using BlockedCountries.Service.Repository.IRepository;
 
-namespace BlockedCountries.Services.Repository.Repository
+namespace BlockedCountries.Service.Repository.Repository
 {
     public class CountryRepo : ICountryRepo
     {
