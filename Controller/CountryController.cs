@@ -1,4 +1,4 @@
-using BlockedCountries.Service.Service;
+using BlockedCountries.Service.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlockedCountries.Controller

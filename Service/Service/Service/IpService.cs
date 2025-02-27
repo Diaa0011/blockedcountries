@@ -9,12 +9,15 @@ namespace BlockedCountries.Service.Service
     public class IpService : IIpService
     {
         private readonly IIpRepo _ipRepo;
+        private readonly ICountryService _countryService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IpService(IIpRepo ipRepo, IHttpContextAccessor httpContextAccessor)
+        public IpService(IIpRepo ipRepo,ICountryService countryService, IHttpContextAccessor httpContextAccessor)
         {
             _ipRepo = ipRepo ??
                 throw new ArgumentNullException(nameof(ipRepo));
+            _countryService = countryService ??
+                throw new ArgumentNullException(nameof(countryService));
             _httpContextAccessor = httpContextAccessor ??
                     throw new ArgumentNullException(nameof(httpContextAccessor));
         }
@@ -40,6 +43,19 @@ namespace BlockedCountries.Service.Service
 
             return ipGeoData;
 
+        }
+
+        public async Task<bool> CheckBlocked()
+        {
+            var ip = GetHttpContextIp();
+            var ipGeoData = await _ipRepo.GetIpGeoData(ip);
+            var country = ipGeoData.CountryCode;
+            var blockedCountries = _countryService.GetCountries(1,250,null);
+            if (blockedCountries.Any(c => c.Code == country))
+            {
+                return true;
+            }
+            return false;
         }
         private string GetHttpContextIp()
         {

@@ -1,6 +1,7 @@
 using System.Collections;
 using BlockedCountries.Service.Repository.IRepository;
 using BlockedCountries.Dtos;
+using BlockedCountries.Service.Service.IService;
 namespace BlockedCountries.Service.Service
 {
     public class CountryService : ICountryService
@@ -22,7 +23,7 @@ namespace BlockedCountries.Service.Service
 
             return country;
         }
-        public IEnumerable<Country> GetCountries(int pageNumber,int pageSize,string? searchString)
+        public IEnumerable<Country> GetCountries(int pageNumber,int pageSize,string? searchString = null)
         {
             if (_countryRepo == null)
             {

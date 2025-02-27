@@ -1,6 +1,7 @@
 using System.Text.Json;
 using BlockedCountries.Dtos;
 using BlockedCountries.Service.Repository.IRepository;
+// using Newtonsoft.Json;
 
 namespace BlockedCountries.Service.Repository.Repository
 {
@@ -27,6 +28,7 @@ namespace BlockedCountries.Service.Repository.Repository
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
+            //var ipGeoData2 = JsonConvert.DeserializeObject<IpGeoData>(json);
             var ipGeoData = JsonSerializer.Deserialize<IpGeoData>(json);
             
             return ipGeoData;

@@ -1,7 +1,7 @@
 using System.Collections;
 using BlockedCountries.Dtos;
 
-namespace BlockedCountries.Service.Service
+namespace BlockedCountries.Service.Service.IService
 {
     public interface ICountryService
     {
