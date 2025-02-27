@@ -2,10 +2,19 @@ using BlockedCountries.Service.Repository.IRepository;
 using BlockedCountries.Service.Repository.Repository;
 using BlockedCountries.Service.Service;
 using BlockedCountries.Service.Service.IService;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+//Serilog configuration
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Host.UseSerilog();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
@@ -31,6 +40,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.Lifetime.ApplicationStopping.Register(Log.CloseAndFlush);
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

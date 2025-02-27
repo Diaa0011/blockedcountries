@@ -13,6 +13,7 @@ namespace BlockedCountries.Service.Service
         }
         public Country GetCountry(string code)
         {
+            code = code.ToUpper();
             var country = _countryRepo.GetCountry(code);
             if (country == null)
             {
@@ -42,6 +43,7 @@ namespace BlockedCountries.Service.Service
         }
         public void AddCountry(string code,string? name)
         {
+            code = code.ToUpper();
             if (code == null || code.Length != 2)
             {
                 throw new InvalidOperationException("Check you entered the right input.");
