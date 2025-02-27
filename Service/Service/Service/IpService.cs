@@ -2,27 +2,26 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
 using BlockedCountries.Dtos;
+using BlockedCountries.Service.Repository.IRepository;
 using BlockedCountries.Service.Service.IService;
 namespace BlockedCountries.Service.Service
 {
     public class IpService : IIpService
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly IIpRepo _ipRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IpService(HttpClient client, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public IpService(IIpRepo ipRepo, IHttpContextAccessor httpContextAccessor)
         {
-            _client = client ??
-                 throw new ArgumentNullException(nameof(client));
-            _configuration = configuration ??
-                 throw new ArgumentNullException(nameof(configuration));
+            _ipRepo = ipRepo ??
+                throw new ArgumentNullException(nameof(ipRepo));
             _httpContextAccessor = httpContextAccessor ??
                     throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public async Task<IpGeoData> GetIpGeoData(string? ip)
         {
+            //If the IP is not provided, get the IP from the HttpContext
             if (ip == null)
             {
                 //very important to note that it will work only on production
@@ -37,18 +36,7 @@ namespace BlockedCountries.Service.Service
                 throw new ArgumentException("Invalid IP address");
             }
 
-            var baseUrl = _configuration["IpGeolocation:BaseUrl"];
-            var apikKey = _configuration["IpGeolocation:ApiKey"];
-
-            var url = $"{baseUrl}?apiKey={apikKey}&ip={ip}";
-
-            var response = await _client.GetAsync(url);
-
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var ipGeoData = JsonSerializer.Deserialize<IpGeoData>(json);
+            var ipGeoData = await _ipRepo.GetIpGeoData(ip);
 
             return ipGeoData;
 

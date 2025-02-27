@@ -23,6 +23,7 @@ builder.Services.AddSwaggerGen();
 //for ip part and parsing
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ICountryRepo,CountryRepo>();
+builder.Services.AddScoped<IIpRepo,IpRepo>();
 builder.Services.AddScoped<ICountryService,CountryService>();
 builder.Services.AddScoped<IIpService,IpService>();
 
