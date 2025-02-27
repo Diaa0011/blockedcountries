@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BlockedCountries")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aac79f5d36a95f23e48cdbfb1c626546c6384a74")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("BlockedCountries")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BlockedCountries")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
