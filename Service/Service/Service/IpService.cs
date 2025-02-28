@@ -40,22 +40,24 @@ namespace BlockedCountries.Service.Service
             }
 
             var ipGeoData = await _ipRepo.GetIpGeoData(ip);
+            ipGeoData.UserAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
 
             return ipGeoData;
 
         }
 
-        public async Task<bool> CheckBlocked()
+        public async Task<(bool,IpGeoData)> CheckBlocked()
         {
             var ip = GetHttpContextIp();
             var ipGeoData = await _ipRepo.GetIpGeoData(ip);
+            ipGeoData.UserAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
             var country = ipGeoData.CountryCode;
             var blockedCountries = _countryService.GetCountries(1,250,null);
             if (blockedCountries.Any(c => c.Code == country))
             {
-                return true;
+                return (true,ipGeoData);
             }
-            return false;
+            return (false,ipGeoData);
         }
         private string GetHttpContextIp()
         {

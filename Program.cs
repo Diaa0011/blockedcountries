@@ -24,8 +24,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ICountryRepo,CountryRepo>();
 builder.Services.AddScoped<IIpRepo,IpRepo>();
+builder.Services.AddSingleton<ILogRepo,LogRepo>();
 builder.Services.AddScoped<ICountryService,CountryService>();
 builder.Services.AddScoped<IIpService,IpService>();
+builder.Services.AddScoped<ILogService,LogService>();
 
 
 

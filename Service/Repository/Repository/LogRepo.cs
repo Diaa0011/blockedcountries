@@ -6,17 +6,20 @@ namespace BlockedCountries.Service.Repository.Repository
 {
     public class LogRepo:ILogRepo
     {
-        private readonly ConcurrentDictionary<string, BlockedLogsData> logs =
-                new ConcurrentDictionary<string, BlockedLogsData>();
+        /*private readonly ConcurrentDictionary<string, BlockedLogsData> logs =
+                new ConcurrentDictionary<string, BlockedLogsData>();*/
+        private readonly List<BlockedLogsData> logs = new List<BlockedLogsData>();
 
-        public void AddLog(BlockedLogsData log)
+        public async Task AddLog(BlockedLogsData log)
         {
-            throw new NotImplementedException();
+            logs.Add(log);
         }
 
-        public IEnumerable<BlockedLogsData> GetLogs(int pageNumber, int pageSize, string? searchString)
+        public async Task<IEnumerable<BlockedLogsData>> GetLogs()
         {
-            throw new NotImplementedException();
+            var logsData = logs.AsEnumerable();
+
+            return logsData;
         }
     }
 }

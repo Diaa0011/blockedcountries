@@ -25,12 +25,13 @@ namespace BlockedCountries.Service.Repository.Repository
             var url = $"{baseUrl}?apiKey={apiKey}&ip={ip}";
 
             var response = await _client.GetAsync(url);
+            
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
             //var ipGeoData2 = JsonConvert.DeserializeObject<IpGeoData>(json);
             var ipGeoData = JsonSerializer.Deserialize<IpGeoData>(json);
-            
+    
             return ipGeoData;
         }
     }

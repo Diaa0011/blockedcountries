@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace BlockedCountries.Dtos
@@ -20,5 +21,7 @@ namespace BlockedCountries.Dtos
 
         [JsonPropertyName("longitude")]
         public string Longitude { get; set; } // JSON returns longitude as a string
+        [JsonPropertyName("user_agent")]
+        public string UserAgent { get; set; }
     }
 }

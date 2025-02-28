@@ -9,10 +9,13 @@ namespace BlockedCountries.Controller
     public class IpController:ControllerBase
     {
         private readonly IIpService _ipService;
-        public IpController(IIpService ipService)
+        private readonly ILogService _logService;
+        public IpController(IIpService ipService,ILogService logService)
         {
             _ipService = ipService ??
                 throw new ArgumentNullException(nameof(ipService));
+            _logService = logService ??
+                throw new ArgumentNullException(nameof(logService));
         }
         //[HttpGet("{ip?}")] //This is the was original depended on just anotation which made ip mandatory
         //The new part depends on anotation and query so the ip is not mandatory
@@ -22,11 +25,14 @@ namespace BlockedCountries.Controller
             var ipGeoData = await _ipService.GetIpGeoData(ip);
             return Ok(ipGeoData);
         }
+        //For external Ip don't forget
         [HttpGet("check-block")]
         public async Task<IActionResult> Checkblocked()
         {
             var isblocked_ip = await _ipService.CheckBlocked();
-            return Ok(isblocked_ip);
+            _logService.AddLog(isblocked_ip.Item2, isblocked_ip.Item1);
+
+            return Ok(isblocked_ip.Item1);
         }
 
     }
