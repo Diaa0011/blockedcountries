@@ -42,7 +42,7 @@ namespace BlockedCountries.Service.Service
 
             return paginatedCountries;
         }
-        public void AddCountry(string code,string? name)
+        public void AddCountry(string code,string? name, bool temporalBlocked = false, int? TemporalBlockTime = null)
         {
             code = code.ToUpper();
             if (code == null || code.Length != 2)
@@ -57,7 +57,7 @@ namespace BlockedCountries.Service.Service
             {
                 try
                 {
-                    _countryRepo.AddCountry(code,name);
+                    _countryRepo.AddCountry(code,name,temporalBlocked,TemporalBlockTime);
                 }
                 catch (Exception e)
                 {

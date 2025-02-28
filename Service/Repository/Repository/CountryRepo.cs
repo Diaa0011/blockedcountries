@@ -32,10 +32,11 @@ namespace BlockedCountries.Service.Repository.Repository
             return countries;
         }
 
-        public void AddCountry(string code, string? name)
+        public void AddCountry(string code, string? name, bool temporalBlocked = false, int? TemporalBlockTime = null)
         {
 
-            _countries.TryAdd(code, new Country { Code = code, Name = name });
+            _countries.TryAdd(code, new Country { Code = code, Name = name,
+            temporalBlocked = temporalBlocked, TemporalBlockTime = TemporalBlockTime });
         }
         public void RemoveCountry(string code)
         {
@@ -45,7 +46,8 @@ namespace BlockedCountries.Service.Repository.Repository
 
         private void SeedCountries()
         {
-            _countries.TryAdd("US", new Country { Code = "US", Name = "United States" });
+            _countries.TryAdd("US", new Country { Code = "US", Name = "United States",
+                temporalBlocked = false, TemporalBlockTime = null });
         }
     }
 }

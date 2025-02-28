@@ -2,6 +2,7 @@ using BlockedCountries.Service.Repository.IRepository;
 using BlockedCountries.Service.Repository.Repository;
 using BlockedCountries.Service.Service;
 using BlockedCountries.Service.Service.IService;
+using BlockedCountries.Service.Service.Service;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +15,11 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .Enrich.FromLogContext()
     .CreateLogger();
+
 builder.Host.UseSerilog();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHostedService<unBlockTempService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

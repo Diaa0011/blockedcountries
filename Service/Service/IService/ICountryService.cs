@@ -8,7 +8,7 @@ namespace BlockedCountries.Service.Service.IService
         //Task<string> GetCountryCode(string ip);
         Country GetCountry(string code);
         IEnumerable<Country> GetCountries(int pageNumber,int pageSize,string? searchString);
-        void AddCountry(string code,string? name);
+        void AddCountry(string code,string? name, bool temporalBlocked = false, int? TemporalBlockTime = null);
         void RemoveCountry(string code);
         
     
