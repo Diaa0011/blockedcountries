@@ -75,8 +75,6 @@ namespace BlockedCountries.Service.Service
             }
 
             _countryRepo.RemoveCountry(code);
-
-
         }
 
 

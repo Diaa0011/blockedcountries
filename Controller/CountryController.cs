@@ -10,49 +10,72 @@ namespace BlockedCountries.Controller
     public class CountryController : ControllerBase
     {
         private readonly ICountryService _countryService;
-        //private readonly unBlockTempService _unBlockTempService;
-        public CountryController(ICountryService countryService)
+        private readonly ILogger<ICountryService> _logger;
+
+
+        public CountryController(ICountryService countryService, ILogger<ICountryService> logger)
         {
             _countryService = countryService ??
                 throw new ArgumentNullException(nameof(countryService));
-            /*_unBlockTempService = unBlockTempService ??
-                throw new ArgumentNullException(nameof(unBlockTempService));*/
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
         }
         [HttpGet("code/{code}")]
         public IActionResult GetCountryByCode(string code)
         {
-            var country = _countryService.GetCountry(code);
-            return Ok(country);
+            try
+            {
+                _logger.LogInformation("Getting country by code: {code}", code);
+
+                var country = _countryService.GetCountry(code);
+                
+                return Ok(country);
+            }catch(InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "An error occurred while Fetching Country.");
+                return NotFound(ex.Message);
+            }
+
         }
         [HttpGet("blocked")]
         public IActionResult GetAllCountries(int pageNumber = 1, int pageSize = 10, string? searchString = null)
         {
-            if(pageNumber < 1 || pageSize < 1)
+            _logger.LogInformation("Getting All Countries");
+            try
             {
-                return BadRequest("Page number and page size must be greater than 0.");
+                if (pageNumber < 1 || pageSize < 1)
+                {
+                    return BadRequest("Page number and page size must be greater than 0.");
+                }
+                var countries = _countryService.GetCountries(pageNumber, pageSize, searchString);
+                return Ok(countries);
             }
-            var countries = _countryService.GetCountries( pageNumber, pageSize, searchString);
-            return Ok(countries);
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "An error occurred while Fetching Countries.");
+                return BadRequest(ex.Message);
+            }
         }
-       
+
         [HttpPost]
-        public IActionResult AddCountry([FromBody]BlockEntry blockEntry)
+        public IActionResult AddCountry([FromBody] BlockEntry blockEntry)
         {
             try
             {
-                _countryService.AddCountry(blockEntry.code, blockEntry.name,false, null);
+                _countryService.AddCountry(blockEntry.code, blockEntry.name, false, null);
                 return CreatedAtAction(nameof(GetCountryByCode), new { code = blockEntry.code },
                          _countryService.GetCountry(blockEntry.code));
             }
             catch (InvalidOperationException ex)
             {
+
                 return BadRequest(ex.Message);
             }
 
         }
 
         [HttpPost("temporal-block")]
-        public IActionResult temporalBlock([FromBody]BlockEntry blockEntry)
+        public IActionResult temporalBlock([FromBody] BlockEntry blockEntry)
         {
             try
             {

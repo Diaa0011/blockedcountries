@@ -12,7 +12,7 @@ namespace BlockedCountries.Service.Service
         private readonly ICountryService _countryService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IpService(IIpRepo ipRepo,ICountryService countryService, IHttpContextAccessor httpContextAccessor)
+        public IpService(IIpRepo ipRepo, ICountryService countryService, IHttpContextAccessor httpContextAccessor)
         {
             _ipRepo = ipRepo ??
                 throw new ArgumentNullException(nameof(ipRepo));
@@ -31,6 +31,10 @@ namespace BlockedCountries.Service.Service
                 //evnrionment, in development it will return the localhost ip
                 //used ngrok server to test it
                 ip = GetHttpContextIp();
+                if (ip == "Unkonwn")
+                {
+                    throw new InvalidOperationException("Unable to retrieve IP address from HttpContext.");
+                }
                 Console.WriteLine("Ip: ", ip);
             }
             //Check if the IP is valid
@@ -46,18 +50,30 @@ namespace BlockedCountries.Service.Service
 
         }
 
-        public async Task<(bool,IpGeoData)> CheckBlocked()
+        public async Task<(bool, IpGeoData)> CheckBlocked()
         {
             var ip = GetHttpContextIp();
+            if (ip == "Unkonwn")
+            {
+                throw new InvalidOperationException("Unable to retrieve IP address from HttpContext.");
+            }
             var ipGeoData = await _ipRepo.GetIpGeoData(ip);
+            if (ipGeoData == null)
+            {
+                throw new InvalidOperationException("Failed to retrieve IP geo data.");
+            }
             ipGeoData.UserAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
             var country = ipGeoData.CountryCode;
-            var blockedCountries = _countryService.GetCountries(1,250,null);
+            var blockedCountries = _countryService.GetCountries(1, 250, null);
+            if (blockedCountries == null)
+            {
+                throw new InvalidOperationException("Failed to retrieve blocked countries.");
+            }
             if (blockedCountries.Any(c => c.Code == country))
             {
-                return (true,ipGeoData);
+                return (true, ipGeoData);
             }
-            return (false,ipGeoData);
+            return (false, ipGeoData);
         }
         private string GetHttpContextIp()
         {
@@ -97,7 +113,7 @@ namespace BlockedCountries.Service.Service
         }
         private bool validIP(string ip)
         {
-            return IPAddress.TryParse(ip,out IPAddress Address) &&
+            return IPAddress.TryParse(ip, out IPAddress Address) &&
                      (Address.AddressFamily == AddressFamily.InterNetwork || Address.AddressFamily == AddressFamily.InterNetworkV6);
         }
     }
