@@ -67,4 +67,3 @@ E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\System.IO.Pipelines.dll
 E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\System.Text.Json.dll
 E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
-E:\sortech_Task\BlockedCountries\bin\Debug\net8.0\appsetting.Prodcution.json
