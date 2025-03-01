@@ -1,11 +1,18 @@
 # Blocked Countries API
+## Index  
+1. Overview
+2. Features
+3. Setup Instruction
+4. Run the Project
+5. Project Structure
+6. Endpoints
 
-## Overview
+## 1. Overview
 .NET Core API to manage blocked countries and validate IP
 addresses using third-party geolocation APIs ( IPGeolocation.io). The
 application doens't use a database and instead rely on in-memory data storage
 
-## Features
+## 2. Features
 - Adding a Blocked Country: 
 ([POST] http://"yourport"/api/countries/block) for adding countries to the permanent blocked list.
 - Deleting a Blocked Country: 
@@ -20,7 +27,7 @@ application doens't use a database and instead rely on in-memory data storage
 ([GET] /api/logs/blocked-attempts) for viewing logs of blocked attempts with pagination.
 - Temporarily Blocking a Country:
 ([POST] /api/countries/temporal-block) to block a country temporarily for a specified duration.
-## Setup Instructions
+## 3. Setup Instructions
 
 ### 1. Clone the Repository
 - Clone the repository to your local machine using:
@@ -48,7 +55,7 @@ dotnet run
 ### 6. Testing API Endpoints
 - Use Postman or Insomnia to test various endpoints like previous examples in endpoints section
 
-## Project Structure
+## 5. Project Structure
 ```
 BLOCKEDCOUNTRIES/  
 ├── bin/  
@@ -91,7 +98,7 @@ BLOCKEDCOUNTRIES/
 ├── BlockedCountries.sln  
 └── Program.cs
 ```
-## Endpoints
+## 6. Endpoints
 ### 1. **Add Country to Permanent Blocked List**
 - **Endpoint**: `POST /api/Country/block`
 - **Example**
