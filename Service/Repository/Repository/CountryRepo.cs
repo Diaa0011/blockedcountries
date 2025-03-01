@@ -14,8 +14,8 @@ namespace BlockedCountries.Service.Repository.Repository
         }
         public Country GetCountry(string code)
         {
-
-            return _countries[code];
+            _countries.TryGetValue(code, out var country);
+            return country;
 
         }
         public bool CountryExists(string code)

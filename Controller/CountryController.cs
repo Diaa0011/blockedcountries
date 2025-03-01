@@ -38,16 +38,15 @@ namespace BlockedCountries.Controller
 
         }
         [HttpGet("blocked")]
-        public IActionResult GetAllCountries(int pageNumber = 1, int pageSize = 10, string? searchString = null)
+        public IActionResult GetAllCountries([FromBody] PaginationEntry paginationEntry)
         {
-            _logger.LogInformation("Getting All Countries");
             try
             {
-                if (pageNumber < 1 || pageSize < 1)
+                if (paginationEntry.PageNumber < 1 || paginationEntry.PageSize < 1)
                 {
                     return BadRequest("Page number and page size must be greater than 0.");
                 }
-                var countries = _countryService.GetCountries(pageNumber, pageSize, searchString);
+                var countries = _countryService.GetCountries(paginationEntry.PageNumber, paginationEntry.PageSize, paginationEntry.searchString);
                 return Ok(countries);
             }
             catch (InvalidOperationException ex)
@@ -57,7 +56,7 @@ namespace BlockedCountries.Controller
             }
         }
 
-        [HttpPost]
+        [HttpPost("block")]
         public IActionResult AddCountry([FromBody] BlockEntry blockEntry)
         {
             try
@@ -98,7 +97,7 @@ namespace BlockedCountries.Controller
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 

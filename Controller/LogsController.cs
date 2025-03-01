@@ -1,3 +1,4 @@
+using BlockedCountries.Dtos;
 using BlockedCountries.Service.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,9 +15,9 @@ namespace BlockedCountries.Controller
                 throw new ArgumentNullException(nameof(logService));
         }   
         [HttpGet("logs")]
-        public IActionResult GetLogs(int pageNumber=1,int pageSize=250)
+        public IActionResult GetLogs([FromBody]BlockedLogsPaginationEngry paginationEntry)
         {
-            var logs = _logService.GetLogs(pageNumber, pageSize);
+            var logs = _logService.GetLogs(paginationEntry.PageNumber, paginationEntry.PageSize);
             return Ok(logs.Result);
         }
     }

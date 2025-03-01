@@ -49,6 +49,10 @@ namespace BlockedCountries.Service.Service
             {
                 throw new InvalidOperationException("Check you entered the right input.");
             }
+            if(TemporalBlockTime<1 || TemporalBlockTime>1440)
+            {
+                throw new InvalidOperationException("Temporal block time must be between 1 and 1440 minutes.");
+            }
             else if (_countryRepo.CountryExists(code))
             {
                 throw new InvalidOperationException("The country already exists.");
